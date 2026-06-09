@@ -19,6 +19,9 @@ fastapi-app/.venv/
 # Logs
 *.log
 
+# AI sessions
+fastapi-app/ai_sessions/
+
 # IDE
 .vscode/
 .idea/

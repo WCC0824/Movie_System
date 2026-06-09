@@ -52,9 +52,16 @@ async def update_password(account: Account):
     return Result.success(account)
 
 
+from api.ai_recommend import router as ai_router
+
+api_router.include_router(ai_router)
+
+
 # 自动导入当前目录下的所有模块
 for _, module_name, _ in pkgutil.iter_modules(__path__, __name__ + "."):
     module = importlib.import_module(module_name)
     if hasattr(module, "router"):
         # 假设每个端点文件都有一个 router 变量
-        api_router.include_router(module.router)
+        # 排除已手动添加的路由
+        if module is not None and module.__name__ != __name__ + ".ai_recommend":
+            api_router.include_router(module.router)

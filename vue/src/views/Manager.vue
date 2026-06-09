@@ -25,6 +25,14 @@
             <el-icon><HomeFilled /></el-icon>
             <span>系统首页</span>
           </el-menu-item>
+          <el-menu-item index="/manager/userMovies">
+            <el-icon><Document /></el-icon>
+            <span>电影列表</span>
+          </el-menu-item>
+          <el-menu-item index="/manager/aiRecommend">
+            <el-icon><MagicStick /></el-icon>
+            <span>AI 电影推荐</span>
+          </el-menu-item>
           <el-sub-menu index="info">
             <template #title>
               <el-icon><Memo /></el-icon>

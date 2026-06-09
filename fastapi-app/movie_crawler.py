@@ -77,13 +77,15 @@ def get_movie_info(movie_info_url, max_retries=3):
             movie_Introductions = movie_doc.xpath(
                 '//*[@id="original_header"]/div[2]/section/div[3]/div/p/text()'
             )
-            movie_images = movie_doc.xpath(
-                '//*[@id="original_header"]/div[1]/div/div[1]/div/img/@src'
-            )
+            # 图片已改用豆瓣抓取，详见 douban_image_crawler.py
+            # movie_images = movie_doc.xpath(
+            #     '//*[@id="original_header"]/div[1]/div/div[1]/div/img/@src'
+            # )
 
             movie_info = {
                 "name": movie_names[0].strip() if movie_names else "",
-                "img": movie_images[0].strip() if movie_images else "",
+                # "img": movie_images[0].strip() if movie_images else "",
+                "img": "",
                 "year": get_movie_years(movie_years),
                 "release_date": get_movie_publish_date(movie_release_dates),
                 "genres": ",".join(movie_types).strip() if movie_types else "",
@@ -124,18 +126,12 @@ async def save_movie_to_db(movie_data):
     # 检查是否已存在（按名称去重）
     existing = await MovieInfo.filter(name=movie_data["name"]).first()
     if existing:
-        if not existing.img and movie_data.get("img"):
-            # 已有记录但缺封面，补充更新
-            existing.img = movie_data["img"]
-            await existing.save()
-            print(f"  [UPDATE] 更新封面: {movie_data['name']}")
-        else:
-            print(f"  [SKIP] 已存在: {movie_data['name']}")
+        print(f"  [SKIP] 已存在: {movie_data['name']}")
         return
 
     await MovieInfo.create(
         name=movie_data["name"],
-        img=movie_data.get("img", ""),
+        img="",  # 图片由 douban_image_crawler.py 单独处理
         year=movie_data["year"],
         release_date=movie_data["release_date"],
         genres=movie_data["genres"],
@@ -148,7 +144,7 @@ async def save_movie_to_db(movie_data):
         introduction=movie_data["introduction"],
         category=category,
     )
-    print(f"  [OK] 已入库: {movie_data['name']}{' (有封面)' if movie_data.get('img') else ''}")
+    print(f"  [OK] 已入库: {movie_data['name']}")
 
 
 async def crawl_and_save():

@@ -9,7 +9,9 @@ from starlette.responses import FileResponse
 from common.exception_handler import CustomException
 from common.result import Result
 
-UPLOAD_DIR = "files"
+# 使用绝对路径，确保在任何工作目录下都能正确访问
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+UPLOAD_DIR = os.path.join(BASE_DIR, "files")
 router = APIRouter(prefix="/files")
 
 

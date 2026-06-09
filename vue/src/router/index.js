@@ -15,6 +15,8 @@ const router = createRouter({
         { path: 'admin', component: () => import('@/views/manager/Admin.vue')},
         { path: 'category', component: () => import('@/views/manager/Category.vue')},
         { path: 'movies', component: () => import('@/views/manager/Movies.vue')},
+        { path: 'userMovies', component: () => import('@/views/manager/UserMovies.vue')},
+        { path: 'aiRecommend', component: () => import('@/views/manager/AIRecommend.vue')},
       ]
     },
     { path: '/login', component: () => import('@/views/Login.vue')},
